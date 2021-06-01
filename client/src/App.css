@@ -1,0 +1,31 @@
+
+
+.create {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+}
+
+.editor {
+  margin: 20px;
+  flex: 1;
+  width:40%;
+}
+
+.view {
+  margin: 20px;
+  flex: 1;
+  width: 30%;
+  
+}
+
+.more {
+  width:90%;
+  margin: 15px 10px 5px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.cnc {
+  margin: 0px 10px 0px 10px;
+}
