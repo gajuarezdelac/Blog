@@ -1,12 +1,14 @@
 
-import {Fab,Container,Card,CardMedia,CardContent,Typography} from '@material-ui/core';
-import React, {useState, useEffect} from 'react'
-import {useParams} from 'react-router-dom'
-import {useSelector} from 'react-redux'
-import { Link } from 'react-router-dom'
+import {Fab,Container,Card,CardMedia,CardContent,Typography,CircularProgress} from '@material-ui/core';
+import React, {useEffect} from 'react'
+import {useSelector,useDispatch} from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import ReactHtmlParser from 'react-html-parser'
+import { getArticleDetails,clearError} from '../../../redux/actions/ArticleAction';
+import Alert from '@material-ui/lab/Alert';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 400,
   },
+  loading: {
+     margin: '200px auto 0px auto',
+     display: 'flex',
+     justifyContent: 'center'
+  },
   cardActions: {
     display: "flex",
     margin: "0 10px",
@@ -47,63 +54,67 @@ const useStyles = makeStyles((theme) => ({
 const Article = () => {
 
   const classes = useStyles();
-
-
-  const [editUser, setEditUser] = useState([])
-  const [url, setUrl] = useState('');
   const {id} = useParams()
+  const dispatch = useDispatch();
 
   const {
-    articles
-  } = useSelector(state => state.ArticleReducer)
+    loading,
+    article,
+    error
+  } = useSelector(state => state.ArticleDetailReducer);
+
 
   useEffect(() => {
-    if(articles.length > 0){
-      articles.forEach(article => {
-            if(article._id === id){
-                setEditUser(article)
-                setUrl(article.image.url)
-            }
-        })
+    dispatch(getArticleDetails(id));
+}, [dispatch, id]);
 
-    }else{
-      console.log("No se encontro!!!")
-    }
-},[articles, id])
-   
+  
+const closeError = async e => {
+  e.preventDefault();
+  try {
+    dispatch(clearError());
+} catch (err) {
+  console.log(err);
+}  }
+
   
 
     return ( 
         <div>
-        <Container maxWidth="md" className={classes.root} >
-        <Card className={classes.root}>
-        <CardMedia
-          className={classes.media}
-          image={url}
-          title={editUser.title}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {editUser.title}
-          </Typography>
-          {/* <Typography gutterBottom variant="h6" component="h2">
-            {editUser.subtitle}
-          </Typography> */}
-          <Typography >
-            {ReactHtmlParser(editUser.content)}
-          </Typography>
-        </CardContent>
-    </Card>
-     
-     <Link to="/">
-     <Fab variant="extended" className={classes.fab}>
-      <NavigationIcon className={classes.extendedIcon} />
-      volver
-      </Fab>
-     </Link>
+          
+     {error &&
+      <Alert onClose={closeError} variant="filled" severity="error" >{error}</Alert>  
+     }
 
-          </Container>
-
+          {loading ?  <div className={classes.loading}><CircularProgress color="primary" /></div> : (
+                <Container maxWidth="md" className={classes.root} >
+                <Card className={classes.root}>
+                <CardMedia
+                  className={classes.media}
+                  image={article.image?.url}
+                  title={article.title}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {article.title}
+                  </Typography>
+                  {/* <Typography gutterBottom variant="h6" component="h2">
+                    {editUser.subtitle}
+                  </Typography> */}
+                  <Typography >
+                    {ReactHtmlParser(article.content)}
+                  </Typography>
+                </CardContent>
+            </Card>
+             
+             <Link to="/">
+             <Fab variant="extended" className={classes.fab}>
+              <NavigationIcon className={classes.extendedIcon} />
+              volver
+              </Fab>
+             </Link>
+                  </Container>        
+          )}  
         </div>
      );
 }

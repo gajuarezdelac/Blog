@@ -21,6 +21,53 @@ export const getArticles = () => async (dispatch) => {
     }
 }
 
+export const getArticleDetails = (id) => async (dispatch) => {
+    try {
+       
+        dispatch({type: ACTION_TYPES.GET_PRODUCT_DETAILS_REQUEST})
+
+        const { data }  = await axios.get(`/api/blog/v1/article/${id}`)
+        
+        dispatch({
+            type: ACTION_TYPES.GET_PRODUCT_DETAILS_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+     dispatch({
+         type: ACTION_TYPES.GET_PRODUCT_DETAILS_FAIL,
+         payload: error.response.data.message
+     })   
+    }
+}
+
+
+export const updateArticle = (id,productData) => async (dispatch) => {
+    try {
+       
+        dispatch({type: ACTION_TYPES.UPDATE_PRODUCT_REQUEST})
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        
+        const { data }  = await axios.put(`/api/v1/admin/product/${id}`,productData,config);
+
+        dispatch({
+            type: ACTION_TYPES.UPDATE_PRODUCT_SUCCESS,
+            payload: data.success
+        })
+
+    } catch (error) {
+     dispatch({
+         type: ACTION_TYPES.UPDATE_PRODUCT_FAIL,
+         payload: error.response.data.message
+     })   
+    }
+}
+
 
 export const createArticle = (newArticle) => async (dispatch) => {
     try {
@@ -67,6 +114,8 @@ export const deleteArticle = (id) => async (dispatch) => {
      })   
     }
 }
+
+
 
 
 // Clear Errors

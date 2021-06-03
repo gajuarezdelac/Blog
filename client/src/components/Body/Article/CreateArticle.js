@@ -97,8 +97,6 @@ const CreateArticle = () => {
     dispatch(createArticle(formData))
  }
  
-
- 
  const onChange = e => { 
   const reader = new FileReader();
   // En caso de que se haya puesto una imagen esta se deposita aqui

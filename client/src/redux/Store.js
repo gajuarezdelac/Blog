@@ -2,13 +2,14 @@ import { createStore,combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { UserReducer } from './reducers/UserReducer';
-import {ArticleReducer, NewArticleReducer, ActionsProductReducer} from './reducers/ArticleReducer';
+import {ArticleReducer, NewArticleReducer, ActionsProductReducer,ArticleDetailReducer} from './reducers/ArticleReducer';
 
 const reducer = combineReducers({
   UserReducer,
   ArticleReducer,
   NewArticleReducer,
-  ActionsProductReducer
+  ActionsProductReducer,
+  ArticleDetailReducer
 })
 // Unicamente se uso en la parte del agregado al carrito
 let initialState = {

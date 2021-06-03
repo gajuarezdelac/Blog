@@ -108,6 +108,34 @@ export const ActionsProductReducer = (state = {}, action) => {
     }
 }
 
+export const ArticleDetailReducer = (state = { article: {}}, action) => {
+    switch (action.type) {
+        case ACTION_TYPES.GET_PRODUCT_DETAILS_REQUEST: 
+        return  {
+            ...state,
+            loading: true,
+        }
+        case ACTION_TYPES.GET_PRODUCT_DETAILS_SUCCESS: 
+        return  {
+            loading: false,
+            article: action.payload.article
+        }
+        case ACTION_TYPES.GET_PRODUCT_DETAILS_FAIL: 
+        return  {
+            ...state,
+            loading: false,
+            error: action.payload
+        }
+        case ACTION_TYPES.CLEAR_ERRORS: 
+           return  {
+               ...state,
+               error: null,
+           }
+        default: 
+          return state;
+    }
+}
+
 
 
 

@@ -33,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3),
     margin: "0 0 100px 0"
   },
+  loading: {
+    margin: '20px auto 0px auto',
+    display: 'flex',
+    justifyContent: 'center'
+ },
   blogTitle: {
     fontWeight: 800,
     paddingBottom: theme.spacing(3)
@@ -107,10 +112,10 @@ const Home = () => {
     <div>
 
       <Box className={classes.hero}>  
-        <Box>Blog Devoper 👨‍💻 </Box>
+        <Box>Welcome! 👨‍💻 </Box>
       </Box>
 
-      {loading ?  <CircularProgress color="primary" /> : (
+      {loading ?  <dv className={classes.loading}><CircularProgress color="primary" /></dv> : (
         <Fragment>
                <Container maxWidth="lg" className={classes.blogsContainer}>
         <Typography variant="h4" className={classes.blogTitle}>
