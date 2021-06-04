@@ -81,7 +81,9 @@ const CardComponent = (props) => {
             </Box>
             <Box>
              {props.user && ( <Fragment>
-              <EditIcon  style={{ color: "#21b6ae",}}  color="secondary"  />
+               <Link to={`/admin/update/${props._id}`}> 
+              <EditIcon  style={{ color: "#21b6ae"}}  color="secondary"  />
+               </Link>
               <DeleteForeverIcon color= "secondary" className={classes.deleteBtn} onClick={() => props.handleOpen(props._id)} />
              </Fragment>) 
              } 

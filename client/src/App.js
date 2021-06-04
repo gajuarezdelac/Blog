@@ -11,6 +11,7 @@ import Login from './components/Body/User/Login';
 import Home from './components/Body/Article/ViewArticles';
 import CreateArticle from './components/Body/Article/CreateArticle';
 import Article from './components/Body/Article/Article';
+import {UpdateArticle} from './components/Body/Article/UpdateArticle';
 
 
 function App() {
@@ -40,13 +41,12 @@ function App() {
       {/* <ProtectedRoute path="/me/update" component={UpdateProfile}  exact/> */}
       {/* <ProtectedRoute path="/password/update" component={UpdatePassword}  exact/> */}
       <ProtectedRoute path="/admin/create" isAdmin={true} component={CreateArticle}  exact/>
-
+      <ProtectedRoute path="/admin/update/:id" isAdmin={true} component={UpdateArticle}  exact/>
     
       </div>  
       {/* <ProtectedRoute path="/dashboard" isAdmin={true} component={Dashboard}  exact/>
       <ProtectedRoute path="/admin/products" isAdmin={true} component={ProductList}  exact/>
       
-      <ProtectedRoute path="/admin/product/:id" isAdmin={true} component={UpdateProduct}  exact/>
       <ProtectedRoute path="/admin/orders" isAdmin={true} component={OrderList}  exact/>
       <ProtectedRoute path="/admin/order/:id" isAdmin={true} component={ProcessOrder}  exact/>
       <ProtectedRoute path="/admin/users" isAdmin={true} component={UserList}  exact/>

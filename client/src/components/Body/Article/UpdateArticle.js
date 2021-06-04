@@ -1,15 +1,65 @@
-import React, { Fragment,useEffect } from 'react';
+import React, { Fragment,useEffect,useState } from 'react';
 import { dispatch } from 'react-redux';
-import { getArticleDetails,clearError} from '../../../redux/actions/ArticleAction';
+import {updateArticle ,getArticleDetails,clearError} from '../../../redux/actions/ArticleAction';
 import { makeStyles } from '@material-ui/core/styles';
 import {useSelector,useDispatch} from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams,useHistory } from 'react-router-dom'
 import NavigationIcon from '@material-ui/icons/Navigation';
-import ReactHtmlParser from 'react-html-parser'
+
+// Component UI
+import Radio from '@material-ui/core/Radio';
+import {RadioGroup,Backdrop,CircularProgress} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import {Button} from '@material-ui/core';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ReactHtmlParser from 'react-html-parser'
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: '25ch',
+  },
+  subtitle: {
+    fontSize: '20px',
+    margin: "0px"
+  },
+  title: {
+    fontSize: '40px',
+    margin: "0px"
+  },
+  img: {
+   width: "500px",
+  },
+  colorPrimary: {
+    backgroundColor: "white"
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+
+
 
 export const UpdateArticle = () => {
   
+  const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const {id} = useParams();
@@ -21,7 +71,7 @@ export const UpdateArticle = () => {
   const [category, setCategory] = useState('');
 
   const [img, setImg] = useState('');
-  const [setOldImg, setOldImg] = useState('');
+  const [oldImg, setOldImg] = useState('');
   const [imgPreview, setimgPreview] = useState('https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101065.jpg');
 
   const {
@@ -79,7 +129,7 @@ const submitHandler = (e) => {
   formData.set('category', category);
   formData.set('image', img);
 
-  dispatch(createArticle(formData))
+  dispatch(updateArticle(formData))
 }
 
 const onChange = e => { 
@@ -97,10 +147,123 @@ reader.readAsDataURL(e.target.files[0])
 }
 
 
-  return (<Fragment> 
+  return (
+    
+  <Fragment>
+   
+  {loading &&
+  <Backdrop className={classes.backdrop} open={loading}>
+  <CircularProgress color="inherit"  />
+  </Backdrop>
+ }
+
+ {error &&
+     <Alert onClose={closeError} variant="filled" severity="error" >{error}</Alert>
+ }
+
+
+   <div className="more">
+    
+    <div className="cnc">
+    <FormControl variant="outlined">
+         <InputLabel htmlFor="outlined-adornment-amount">Titulo</InputLabel>
+         <OutlinedInput
+           id="outlined-adornment-amount"
+           value={title} onChange={(e) => setTitle(e.target.value)}
+           labelWidth={50}
+         />
+       </FormControl>
+    </div>
+
+    <div className="cnc">
+    <FormControl  variant="outlined">
+         <InputLabel htmlFor="outlined-adornment-amount" >Subtitulo</InputLabel>
+         <OutlinedInput
+           id="outlined-adornment-amount"
+           value={subtitle} onChange={(e) => setSubtitle(e.target.value)}
+           labelWidth={70}
+         />
+       </FormControl>
+    </div>
+
+    <div className="cnc">
+    <Button
+    variant="contained"
+    color="secondary"
+    component="label"
+    >
+    Subir Imagen
+    <input
+    type="file"
+    hidden
+    accept="image/*"
+    id="raised-button-file"
+    onChange={onChange}
+    />
+   </Button>
+    </div>
+
+    <div className="cnc">
+    <Button
+    variant="outlined"
+    color="secondary"
+    component="label"
+    onClick={cleanImage}
+    disabled={!img && true}
+    >
+    Quitar Imagen
+   </Button>
+    </div>
+
+    <div>
+    <RadioGroup onChange={(e) => setCategory(e.target.value)} row aria-label="position" name="position" defaultValue="top">
+      <FormControlLabel value="web" checked={category === "web"}  control={<Radio color="primary" />} label="Web" />
+      <FormControlLabel value="movil" checked={category === "movil"}  control={<Radio color="primary" />} label="Móvil" />
+      <FormControlLabel value="otros" checked={category === "otros"} control={<Radio color="primary" />} label="Otros" />
+     </RadioGroup>
+    </div>
 
 
 
-  </Fragment>)
+    <div className="guardar">
+     <Button variant="contained"  disabled={(!oldImg || !title || !subtitle  || !category) && true}  color="primary" onClick={submitHandler}>
+       Guardar
+     </Button>
+     </div>
+    
+
+
+    
+   </div>
+    <div className="create" >
+       <div className="editor">
+         <CKEditor
+           editor={ClassicEditor}
+           onChange={handleOnChange}
+           data={value}
+           name="content"
+         />
+       </div>
+
+       <div className="view" >
+         <Fragment>
+           {!img ? <div>
+           <img className={classes.img} src={oldImg} alt="ImagenPreview" /> 
+           </div> : <div>
+           <img className={classes.img} src={img} alt="ImagenPreview" /> 
+           </div>}
+           <p className={classes.title}> {title} </p>  
+           <p className={classes.subtitle} >{ subtitle }</p>
+           {ReactHtmlParser(value)}
+           
+         </Fragment>
+       </div>
+
+     
+     
+     </div>
+      </Fragment>
+
+  )
 
 }
