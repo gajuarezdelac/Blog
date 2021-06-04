@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {useSelector,useDispatch} from 'react-redux'
 import { Link, useParams,useHistory } from 'react-router-dom'
 import NavigationIcon from '@material-ui/icons/Navigation';
+import  {ACTION_TYPES} from '../../../redux/constants/ArticleConst';
 
 // Component UI
 import Radio from '@material-ui/core/Radio';
@@ -72,7 +73,6 @@ export const UpdateArticle = () => {
 
   const [img, setImg] = useState('');
   const [oldImg, setOldImg] = useState('');
-  const [imgPreview, setimgPreview] = useState('https://images.assetsdelivery.com/compings_v2/pavelstasevich/pavelstasevich1811/pavelstasevich181101065.jpg');
 
   const {
     loading,
@@ -80,6 +80,7 @@ export const UpdateArticle = () => {
     error
   } = useSelector(state => state.ArticleDetailReducer);
 
+  const { loading: loadingUpdate, error: updateError, isUpdated } = useSelector(state => state.ActionsProductReducer);
   
   useEffect(() => {
     if (article && article._id !== id) {
@@ -92,11 +93,12 @@ export const UpdateArticle = () => {
         setCategory(article.category);
     }
 
-    // if (isUpdated) {
-    //     history.push('/admin/products');
-    //     dispatch({ type: ACTION_TYPES.UPDATE_PRODUCT_RESET })
-    // }
-}, [dispatch, article, id])
+    if (isUpdated) {
+        history.push('/');
+        dispatch({ type: ACTION_TYPES.UPDATE_PRODUCT_RESET })
+    }
+
+}, [dispatch, article, id, isUpdated,history])
  
 // Nos permite cerrar el quitar el error!
 const closeError = async e => {
@@ -129,7 +131,7 @@ const submitHandler = (e) => {
   formData.set('category', category);
   formData.set('image', img);
 
-  dispatch(updateArticle(formData))
+  dispatch(updateArticle(id, formData))
 }
 
 const onChange = e => { 
@@ -157,8 +159,18 @@ reader.readAsDataURL(e.target.files[0])
   </Backdrop>
  }
 
+{loadingUpdate &&
+  <Backdrop className={classes.backdrop} open={loadingUpdate}>
+  <CircularProgress color="inherit"  />
+  </Backdrop>
+ }
+
  {error &&
      <Alert onClose={closeError} variant="filled" severity="error" >{error}</Alert>
+ }
+
+{updateError &&
+     <Alert onClose={closeError} variant="filled" severity="error" >{updateError}</Alert>
  }
 
 

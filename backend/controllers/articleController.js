@@ -73,6 +73,7 @@ exports.updateArticle = catchAsyncError(async (req, res, next) => {
         title: req.body.title, 
         subtitle: req.body.subtitle,
         content: req.body.content,
+        category: req.body.category
     }
  
     let article = await ArticleModel.findById(req.params.id);
@@ -88,8 +89,7 @@ exports.updateArticle = catchAsyncError(async (req, res, next) => {
         const res = await cloudinary.v2.uploader.destroy(image_id);
 
         const result = await cloudinary.v2.uploader.upload(req.body.image, {
-            folder: 'avatars',
-            width: 150,
+            folder: 'imageBlog',
             crop: "scale"
     })
     

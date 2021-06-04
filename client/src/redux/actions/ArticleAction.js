@@ -42,7 +42,7 @@ export const getArticleDetails = (id) => async (dispatch) => {
 }
 
 
-export const updateArticle = (id,productData) => async (dispatch) => {
+export const updateArticle = (id,articleData) => async (dispatch) => {
     try {
        
         dispatch({type: ACTION_TYPES.UPDATE_PRODUCT_REQUEST})
@@ -53,7 +53,7 @@ export const updateArticle = (id,productData) => async (dispatch) => {
             }
         }
         
-        const { data }  = await axios.put(`/api/v1/admin/product/${id}`,productData,config);
+        const { data }  = await axios.put(`/api/blog/v1/article/${id}`,articleData,config);
 
         dispatch({
             type: ACTION_TYPES.UPDATE_PRODUCT_SUCCESS,
