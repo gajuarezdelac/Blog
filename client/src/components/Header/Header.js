@@ -67,13 +67,12 @@ function Header() {
           </Typography>
         {user  ? (
           <Fragment>
-      
-          <Link to="user/update" className={classes.link} >  <Chip
+       <Chip
            avatar={<Avatar className={classes.orange} src={user.avatar?.url} ></Avatar>}
            label={user.name}
            clickable
            color="primary"
-           /> </Link>
+           /> 
    
          <Link to="/" onClick={logoutHandler} >
          <IconButton color="secondary" aria-label="add to shopping cart">

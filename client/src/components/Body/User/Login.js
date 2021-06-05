@@ -15,6 +15,8 @@ import {login, clearError } from '../../../redux/actions/UserAction';
 import  {useDispatch,useSelector} from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
 import  {useHistory, Link} from 'react-router-dom';
+import MetaData from '../Article/Metadata/Metadata';
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -97,6 +99,7 @@ const submitHandler = (e) => {
       <Alert onClose={closeError} variant="filled" severity="error" >{error}</Alert>
 
 }
+<MetaData title={'Login'} />
 
 
 <Container component="main" maxWidth="xs">

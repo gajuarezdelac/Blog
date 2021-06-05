@@ -8,6 +8,7 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 import ReactHtmlParser from 'react-html-parser'
 import { getArticleDetails,clearError} from '../../../redux/actions/ArticleAction';
 import Alert from '@material-ui/lab/Alert';
+import MetaData from './Metadata/Metadata';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -88,6 +89,10 @@ const closeError = async e => {
 
           {loading ?  <div className={classes.loading}><CircularProgress color="primary" /></div> : (
                 <Container maxWidth="md" className={classes.root} >
+
+                <MetaData title={article.title} />
+
+
                 <Card className={classes.root}>
                 <CardMedia
                   className={classes.media}

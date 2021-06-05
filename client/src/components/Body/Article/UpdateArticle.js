@@ -1,11 +1,11 @@
 import React, { Fragment,useEffect,useState } from 'react';
-import { dispatch } from 'react-redux';
 import {updateArticle ,getArticleDetails,clearError} from '../../../redux/actions/ArticleAction';
 import { makeStyles } from '@material-ui/core/styles';
 import {useSelector,useDispatch} from 'react-redux'
-import { Link, useParams,useHistory } from 'react-router-dom'
-import NavigationIcon from '@material-ui/icons/Navigation';
+import {  useParams,useHistory } from 'react-router-dom'
 import  {ACTION_TYPES} from '../../../redux/constants/ArticleConst';
+import MetaData from './Metadata/Metadata';
+
 
 // Component UI
 import Radio from '@material-ui/core/Radio';
@@ -152,7 +152,9 @@ reader.readAsDataURL(e.target.files[0])
   return (
     
   <Fragment>
-   
+
+  <MetaData title={'Update Article '} />
+ 
   {loading &&
   <Backdrop className={classes.backdrop} open={loading}>
   <CircularProgress color="inherit"  />

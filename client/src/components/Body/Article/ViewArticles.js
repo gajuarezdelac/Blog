@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import  {useSelector,useDispatch} from 'react-redux';
 import CardComponent from './Card/Card';
 import { getArticles,deleteArticle } from '../../../redux/actions/ArticleAction';
+import MetaData from './Metadata/Metadata';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -110,6 +111,8 @@ const Home = () => {
 
   return (
     <div>
+     
+     <MetaData title={'Blog Home'} />
 
       <Box className={classes.hero}>  
         <Box>Welcome! 👨‍💻 </Box>
